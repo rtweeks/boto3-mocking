@@ -58,7 +58,7 @@ class PatchTarget:
             self.registrations[service] = ex
     
     @contextmanager
-    def handle_for(self, service: str, handler):
+    def handler_for(self, service: str, handler):
         with patch.dict(self.services, {service: handler}):
             yield
 
@@ -84,7 +84,7 @@ def enter_handlers(stack, service: str, **kwargs):
     """
     for target_name, handler in kwargs.items():
         stack.enter_context(
-            globals()[target_name].with_handler(service, handler)
+            globals()[target_name].handler_for(service, handler)
         )
 
 def engage_patching():
